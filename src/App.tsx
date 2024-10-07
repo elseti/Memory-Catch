@@ -11,8 +11,7 @@ root.render(
     onError={() => alert("Game error")}
     levelInfo={{
       level: 1,
-      lives: 3,
-      time: 60,
     }}
   />
 );
+

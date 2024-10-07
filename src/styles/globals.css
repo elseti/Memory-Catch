@@ -8,3 +8,20 @@ body,
   height: 100%;
   width: 100%;
 }
+
+.fish {
+  animation: swim 5s linear infinite; /* Animation applied to fish */
+}
+
+/* Keyframes for swimming animation */
+@keyframes swim {
+  0% {
+      transform: translateX(-100px) rotate(0deg); /* Start from left off-screen */
+  }
+  50% {
+      transform: translateX(100vw) rotate(10deg); /* Move across to right side */
+  }
+  100% {
+      transform: translateX(-100px) rotate(0deg); /* Reset to start position */
+  }
+}

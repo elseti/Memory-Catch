@@ -1,25 +1,23 @@
-// src/GameComponent.tsx
-
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./styles/globals.css";
 import FishBox from "./components/FishBox";
 import LivesBox from "./components/LivesBox";
 import LevelBox from "./components/LevelBox";
 import TimeBox from "./components/TimeBox";
-import FishSilhouette from "./components/FishSilhouette";
 import FishPool from "./components/FishPool";
+import { getLevel } from "./components/GameLogic";
+import CorrectOverlay from "./components/CorrectOverlay";
 
-interface LevelInfo {
+
+interface levelInfo {
   level: number;
-  time: number;
-  lives: number;
 }
 
 interface GameComponentProps {
   onSuccess: () => void;
   onError: () => void;
-  levelInfo: LevelInfo;
+  levelInfo: levelInfo;
 }
 
 /**
@@ -34,70 +32,74 @@ interface GameComponentProps {
  *   - time: The time allocated for the game level.
  *   - lives: The number of lives available in the game level.
  */
-const GameComponent: React.FC<GameComponentProps> = ({
-  onSuccess,
-  onError,
-  levelInfo,
-}) => {
+const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
   const [showFishBox, setShowFishBox] = useState<boolean>(true);
+  const [gameLevel, setGameLevel] = useState<any>();
+  const [level, setLevel] = useState<number>(levelInfo.level);
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);
 
   const handleGameSuccess = () => {
-    if (onSuccess) onSuccess();
+    // if (onSuccess) onSuccess();
+    setIsCorrect(true);
+    setLevel(level + 1);
+    setGameLevel(getLevel(level + 1));
   };
 
   const handleGameError = () => {
     if (onError) onError();
   };
 
-  const { level, time, lives } = levelInfo;
-
   const endFishBox = () => {
     setShowFishBox(false);
   }
 
   const endTimer = () => {
-
+    handleGameError();
   }
 
   const endLives = () => {
-
+    handleGameError();
   }
 
-  return (
-      <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-full gap-6">
-        <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
-        <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
-          <LevelBox level={level}/>
-          <TimeBox duration={time} onEnd={endTimer}/>
-          <LivesBox lives={lives} imageName="heart.png"/>
-        </div>
+  const endCorrectOverlay = () => {
+    setShowFishBox(true);
+    setIsCorrect(false);
+  }
 
-        {showFishBox ? (
-          <FishBox imageName="anglerfish" duration={1} message="Catch this fish!" onEnd={endFishBox}/>
-        ) : (
-          // <div className="bg-red-400 bg-opacity-60">
-          //   fish
-            <FishPool fishNumber={5} correctFishName="anglerfish.png" onCorrect={onSuccess} onWrong={onError}/>
-            // {/* <FishSilhouette imageName="fish_sil/anglerfish.png" onClick={handleGameSuccess}/> */}
-          // </div>
-        )}
-        
-        {/* <button
-          className="px-4 py-2 text-white rounded-md bg-emerald-500"
-          onClick={handleGameSuccess}
-        >
-          Simulate Success
-        </button>
-        <button
-          className="px-4 py-2 text-white bg-red-500 rounded-md"
-          onClick={handleGameError}
-        >
-          Simulate Error
-        </button> */}
-      </div>
-      
-  );
+  useEffect(() => {
+    setGameLevel(getLevel(levelInfo.level));
+    setPageLoaded(true);
+  }, [])
+
+
+  // render after page is loaded
+  if(pageLoaded){
+    return (
+        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6">
+          {isCorrect && <CorrectOverlay message="Correct!" onEnd={endCorrectOverlay}/>}
+          <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
+          <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
+            <LevelBox level={level}/>
+            {!isCorrect && !showFishBox && <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer}/>}
+            {!isCorrect && !showFishBox && <LivesBox lives={3} imageName="heart.png" onEnd={endLives}/>}
+            {/* TODO - add lives to game level constant? */}
+          </div>
+  
+          {showFishBox ? (
+            <FishBox imageName="anglerfish" duration={gameLevel.displayTime} message="Catch this fish!" onEnd={endFishBox}/>
+          ) : (
+            <div>
+              {!isCorrect && <FishPool fishNumber={gameLevel.fish} correctFishName="anglerfish.png" onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
+            </div>
+            
+          )}
+  
+        </div>
+    );
+  }
+
+  
 };
 
-// whatever you do just make sure you export this
 export default GameComponent;

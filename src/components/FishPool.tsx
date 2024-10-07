@@ -22,7 +22,7 @@ export default function FishPool( props: FishPoolProps ) {
         while (randomList.length < props.fishNumber - 1) {
             let randomFish = fishList[Math.floor(Math.random() * fishList.length)];
             
-            if (!randomList.includes(randomFish)) {
+            if (!(randomList.includes(randomFish) && randomList.includes(props.correctFishName))) {
                 randomList.push(randomFish);
             }
         }
@@ -45,7 +45,8 @@ export default function FishPool( props: FishPoolProps ) {
 
     // generate a random number between 0.3 to 1 to scale the fish
     const getRandomScale = () => {
-        let scale = Math.random() + 0.3;
+        // let scale = Math.random() + 0.3;
+        let scale = 0.3;
         console.log(scale)
         return scale;
     }
@@ -55,7 +56,7 @@ export default function FishPool( props: FishPoolProps ) {
     }, [])
     
     return (
-        <div className="relative w-full h-screen mt-20 bg-red-500 bg-opacity-40">
+        <div className="relative w-full h-screen mt-20">
             {/* Render random fish */}
             {randomFishList.map((imageName, index) => (
                 <div key={index}>

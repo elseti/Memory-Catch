@@ -10,15 +10,15 @@ export default function FishSilhouette( props: FishSilhouetteProps ) {
 
     const onClick = () => {
         props.onClick();
-        console.log(props.leftPosition, props.topPosition)
     };
 
 
     return (
         <button>
             <img src={props.imageName}  
-                className="absolute"
                 onClick={onClick}
+                className="absolute"
+                // className="fish absolute"
                 style={{
                     left: `${props.leftPosition}px`,
                     top:  `${props.topPosition}px`,

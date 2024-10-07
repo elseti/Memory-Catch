@@ -16,7 +16,7 @@ export default function FishBox( props: FishBoxProps ) {
     };
 
     const onTimerTick = (timerValue: number) => {
-        setTimerValue(timerValue - 1);  // Countdown
+        setTimerValue(timerValue - 1);
     };
 
     // popup disappears after duration (seconds)
