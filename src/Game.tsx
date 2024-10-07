@@ -1,7 +1,12 @@
 // src/GameComponent.tsx
 
 import React from "react";
+import { useState } from "react";
 import "./styles/globals.css";
+import FishBox from "./components/FishBox";
+import LivesBox from "./components/LivesBox";
+import LevelBox from "./components/LevelBox";
+import TimeBox from "./components/TimeBox";
 
 interface LevelInfo {
   level: number;
@@ -32,6 +37,8 @@ const GameComponent: React.FC<GameComponentProps> = ({
   onError,
   levelInfo,
 }) => {
+  const [showFishBox, setShowFishBox] = useState<boolean>(true);
+
   const handleGameSuccess = () => {
     if (onSuccess) onSuccess();
   };
@@ -42,24 +49,47 @@ const GameComponent: React.FC<GameComponentProps> = ({
 
   const { level, time, lives } = levelInfo;
 
+  const endFishBox = () => {
+    setShowFishBox(false);
+  }
+
+  const endTimer = () => {
+
+  }
+
+  const endLives = () => {
+
+  }
+
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full gap-6">
-      <h1>Game Level: {level}</h1>
-      <p>Time: {time}</p>
-      <p>Lives: {lives}</p>
-      <button
-        className="px-4 py-2 text-white rounded-md bg-emerald-500"
-        onClick={handleGameSuccess}
-      >
-        Simulate Success
-      </button>
-      <button
-        className="px-4 py-2 text-white bg-red-500 rounded-md"
-        onClick={handleGameError}
-      >
-        Simulate Error
-      </button>
-    </div>
+      <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-full gap-6">
+        <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
+        <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
+          <LevelBox level={level}/>
+          <TimeBox duration={time} onEnd={endTimer}/>
+          <LivesBox lives={lives} imageName="heart.png"/>
+        </div>
+
+        {showFishBox ? (
+          <FishBox imageName="anglerfish" duration={5} message="Catch this fish!" onEnd={endFishBox}/>
+        ) : (
+          <div>fish</div>
+        )}
+        
+        {/* <button
+          className="px-4 py-2 text-white rounded-md bg-emerald-500"
+          onClick={handleGameSuccess}
+        >
+          Simulate Success
+        </button>
+        <button
+          className="px-4 py-2 text-white bg-red-500 rounded-md"
+          onClick={handleGameError}
+        >
+          Simulate Error
+        </button> */}
+      </div>
+      
   );
 };
 

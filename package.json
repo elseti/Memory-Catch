@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/elseti/Memory-Catch"
   },
   "scripts": {
     "build": "node build.mjs",
