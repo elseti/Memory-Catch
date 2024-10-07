@@ -32,22 +32,18 @@ export default function FishPool( props: FishPoolProps ) {
     // generate a random left position
     const getRandomLeftPosition = (maxWidth: number) => {
         let left = Math.floor(Math.random() * (maxWidth - WIDTH_OFFSET)); // Assuming the width of the image is 100px
-        console.log(left, window.innerWidth)
         return left;
     };
 
     // generate a random top position
     const getRandomTopPosition = (maxHeight: number) => {
         let top = Math.floor(Math.random() * (maxHeight - HEIGHT_OFFSET)); // Assuming the height of the image is 100px
-        console.log(top, window.innerHeight);
         return top;
     };
 
-    // generate a random number between 0.3 to 1 to scale the fish
+    // generate a random number between 0.3 to 0.8 to scale the fish
     const getRandomScale = () => {
-        // let scale = Math.random() + 0.3;
-        let scale = 0.3;
-        console.log(scale)
+        let scale = (Math.random() * 0.5) + 0.3;
         return scale;
     }
 

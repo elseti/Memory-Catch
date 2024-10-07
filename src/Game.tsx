@@ -8,6 +8,7 @@ import TimeBox from "./components/TimeBox";
 import FishPool from "./components/FishPool";
 import { getLevel } from "./components/GameLogic";
 import CorrectOverlay from "./components/CorrectOverlay";
+import { useStore } from "./stores/store";
 
 
 interface levelInfo {
@@ -36,11 +37,18 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
   const [showFishBox, setShowFishBox] = useState<boolean>(true);
   const [gameLevel, setGameLevel] = useState<any>();
-  const [level, setLevel] = useState<number>(levelInfo.level);
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
+
+  // using zustand for storing states for lives and level
+  const lives = useStore((state) => state.lives);
+  const setLives = useStore((state) => state.setLives);
+
+  const level = useStore((state) => state.level);
+  const setLevel = useStore((state) => state.setLevel);
 
   const handleGameSuccess = () => {
     // if (onSuccess) onSuccess();
+    // TODO- CHECK IF LEVEL IS OVER
     setIsCorrect(true);
     setLevel(level + 1);
     setGameLevel(getLevel(level + 1));
@@ -82,7 +90,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
           <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
             <LevelBox level={level}/>
             {!isCorrect && !showFishBox && <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer}/>}
-            {!isCorrect && !showFishBox && <LivesBox lives={3} imageName="heart.png" onEnd={endLives}/>}
+            {!isCorrect && !showFishBox && <LivesBox lives={lives} imageName="heart.png" onEnd={endLives}/>}
             {/* TODO - add lives to game level constant? */}
           </div>
   
