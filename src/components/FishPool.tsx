@@ -1,26 +1,82 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { fishList } from '../constants/FishImages';
+import FishSilhouette from './FishSilhouette';
 
 interface FishPoolProps {
-    duration: number; // duration (in seconds) of the fish box's appearance
-    imageName: string; // file name of fish image (relative to public folder)
-    message: string; // message to display in the box
-    onEnd?: () => void; // function to run when fish box disappears
+    fishNumber: number;
+    correctFishName: string; // name of correct fish name
+    onCorrect: () => void; // function to run when fish box disappears
+    onWrong: () => void;
 }
 
 export default function FishPool( props: FishPoolProps ) {
-    const [timerValue, setTimerValue] = useState(props.duration);
+    const HEIGHT_OFFSET = 350;
+    const WIDTH_OFFSET = 100;
 
-    const onEnd = () => {
-        props.onEnd && props.onEnd();
+    const [randomFishList, setRandomFishList] = useState<string[]>([]);
+
+    // generate a list of random fish (excluding the targetted fish)
+    const generateRandomFishList = () => {
+        let randomList: string[] = [];
+        
+        while (randomList.length < props.fishNumber - 1) {
+            let randomFish = fishList[Math.floor(Math.random() * fishList.length)];
+            
+            if (!randomList.includes(randomFish)) {
+                randomList.push(randomFish);
+            }
+        }
+        return randomList; 
+    };
+    
+    // generate a random left position
+    const getRandomLeftPosition = (maxWidth: number) => {
+        let left = Math.floor(Math.random() * (maxWidth - WIDTH_OFFSET)); // Assuming the width of the image is 100px
+        console.log(left, window.innerWidth)
+        return left;
     };
 
+    // generate a random top position
+    const getRandomTopPosition = (maxHeight: number) => {
+        let top = Math.floor(Math.random() * (maxHeight - HEIGHT_OFFSET)); // Assuming the height of the image is 100px
+        console.log(top, window.innerHeight);
+        return top;
+    };
 
+    // generate a random number between 0.3 to 1 to scale the fish
+    const getRandomScale = () => {
+        let scale = Math.random() + 0.3;
+        console.log(scale)
+        return scale;
+    }
+
+    useEffect(() => {
+        setRandomFishList(generateRandomFishList);
+    }, [])
+    
     return (
-        <div className="h-screen w-screen items-center justify-center text-center mt-20">
-            <div className="absolute flex flex-col m-auto left-0 right-0 p-10 bg-slate-500 bg-opacity-85 rounded-xl shadow-xl w-1/2 h-1/3">
-                <div>asdfjkasdkjf</div>
-            </div>
-            
+        <div className="relative w-full h-screen mt-20 bg-red-500 bg-opacity-40">
+            {/* Render random fish */}
+            {randomFishList.map((imageName, index) => (
+                <div key={index}>
+                    <FishSilhouette 
+                        imageName={`fish_sil/${imageName}`}
+                        onClick={props.onWrong}
+                        leftPosition={getRandomLeftPosition(window.innerWidth)}
+                        topPosition={getRandomTopPosition(window.innerHeight)}
+                        scale={getRandomScale()}
+                    />
+                </div>
+            ))}
+
+            {/* Render targetted fish */}
+            <FishSilhouette 
+                imageName={`fish_sil/${props.correctFishName}`}
+                onClick={props.onCorrect}
+                leftPosition={getRandomLeftPosition(window.innerWidth)}
+                topPosition={getRandomTopPosition(window.innerHeight)}
+                scale={getRandomScale()}
+            />
         </div>
     );
 }

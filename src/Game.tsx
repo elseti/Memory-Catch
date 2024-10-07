@@ -7,6 +7,8 @@ import FishBox from "./components/FishBox";
 import LivesBox from "./components/LivesBox";
 import LevelBox from "./components/LevelBox";
 import TimeBox from "./components/TimeBox";
+import FishSilhouette from "./components/FishSilhouette";
+import FishPool from "./components/FishPool";
 
 interface LevelInfo {
   level: number;
@@ -15,8 +17,8 @@ interface LevelInfo {
 }
 
 interface GameComponentProps {
-  onSuccess?: () => void;
-  onError?: () => void;
+  onSuccess: () => void;
+  onError: () => void;
   levelInfo: LevelInfo;
 }
 
@@ -71,9 +73,13 @@ const GameComponent: React.FC<GameComponentProps> = ({
         </div>
 
         {showFishBox ? (
-          <FishBox imageName="anglerfish" duration={5} message="Catch this fish!" onEnd={endFishBox}/>
+          <FishBox imageName="anglerfish" duration={1} message="Catch this fish!" onEnd={endFishBox}/>
         ) : (
-          <div>fish</div>
+          // <div className="bg-red-400 bg-opacity-60">
+          //   fish
+            <FishPool fishNumber={5} correctFishName="anglerfish.png" onCorrect={onSuccess} onWrong={onError}/>
+            // {/* <FishSilhouette imageName="fish_sil/anglerfish.png" onClick={handleGameSuccess}/> */}
+          // </div>
         )}
         
         {/* <button
