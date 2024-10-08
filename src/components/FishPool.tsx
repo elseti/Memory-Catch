@@ -4,7 +4,7 @@ import FishSilhouette from './FishSilhouette';
 
 interface FishPoolProps {
     fishNumber: number;
-    correctFishName: string; // name of correct fish name
+    correctFishName: string; // name path of correct fish name
     onCorrect: () => void; // function to run when fish box disappears
     onWrong: () => void;
 }
@@ -22,7 +22,7 @@ export default function FishPool( props: FishPoolProps ) {
         while (randomList.length < props.fishNumber - 1) {
             let randomFish = fishList[Math.floor(Math.random() * fishList.length)];
             
-            if (!(randomList.includes(randomFish) && randomList.includes(props.correctFishName))) {
+            if (!randomList.includes(randomFish) && !randomList.includes(props.correctFishName)) {
                 randomList.push(randomFish);
             }
         }

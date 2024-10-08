@@ -18,11 +18,11 @@ const useTimer = (props:UseCountdownTimerProps) => {
       }, 1000);
       return () => clearInterval(interval);
     }
-    if (timerValue === 0) {
+    if (timerValue === 0 && !isTimerDone) {
       setIsTimerDone(true);
       props.onTimerEnd();
     }
-  }, [timerValue, props.onTimerEnd]);
+  }, [timerValue]);
 
   return { isTimerDone, timerValue };
 };

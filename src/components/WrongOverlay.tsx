@@ -26,7 +26,7 @@ export default function WrongOverlay(props : WrongOverlayProps){
         <div className="absolute z-50 w-full h-screen bg-red-300 bg-opacity-30 justify-center text-center">
             <div className="absolute transform scale-75 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <img src="wrong.png"/>
-                <p className="text-green-800 text-2xl font-bold tracking-wider">{props.message}</p>
+                <p className="text-red-800 text-2xl font-bold tracking-wider">{props.message}</p>
             </div> 
         </div>
     );
