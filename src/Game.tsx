@@ -6,7 +6,7 @@ import LivesBox from "./components/LivesBox";
 import LevelBox from "./components/LevelBox";
 import TimeBox from "./components/TimeBox";
 import FishPool from "./components/FishPool";
-import { getLevel } from "./components/GameLogic";
+import { getLevel, getRandomFish, HIGHEST_LEVEL } from "./components/GameLogic";
 import CorrectOverlay from "./components/CorrectOverlay";
 import { useStore } from "./stores/store";
 import WrongOverlay from "./components/WrongOverlay";
@@ -38,6 +38,7 @@ interface GameComponentProps {
 const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
   const [showFishBox, setShowFishBox] = useState<boolean>(true);
+  const [targetFish, setTargetFish] = useState<string>("");
   const [gameLevel, setGameLevel] = useState<any>();
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
@@ -55,8 +56,11 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     // if (onSuccess) onSuccess();
     // TODO- CHECK IF LEVEL IS OVER
     setIsCorrect(true);
-    setLevel(level + 1);
-    setGameLevel(getLevel(level + 1));
+    if(level < HIGHEST_LEVEL){
+      setLevel(level + 1);
+      setGameLevel(getLevel(level + 1));
+      setTargetFish(getRandomFish());
+    }
   };
 
   const handleGameError = () => {
@@ -69,6 +73,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     else{
       setIsWrong(true);
       setLives(lives - 1);
+      setTargetFish(getRandomFish());
     }
   };
 
@@ -99,7 +104,6 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const endWrongOverlay = () => {
     setIsWrong(false);
     setShowFishBox(true);
-    
   }
 
   const endGameOver = () => {
@@ -113,8 +117,11 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     setGameLevel(getLevel(levelInfo.level));
   }
 
+
   useEffect(() => {
+    setLevel(levelInfo.level);
     setGameLevel(getLevel(levelInfo.level));
+    setTargetFish(getRandomFish());
     setPageLoaded(true);
   }, [])
 
@@ -129,16 +136,16 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
           <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
           <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
             {!showFishBox && !isCorrect && !isWrong && !isGameOver && <LevelBox level={level}/>}
-            {!showFishBox && !isCorrect && !isWrong && !isGameOver && <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer}/>}
+            {/* {!showFishBox && !isCorrect && !isWrong && !isGameOver && <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer}/>} */}
             {!showFishBox && !isCorrect && !isWrong && !isGameOver && <LivesBox lives={lives} imageName="heart.png" onEnd={endLives}/>}
             {/* TODO - add lives to game level constant? */}
           </div>
   
           {showFishBox ? (
-            <FishBox imageName="anglerfish.png" duration={gameLevel.displayTime} message="Catch this fish!" onEnd={endFishBox}/>
+            <FishBox imageName={targetFish} duration={gameLevel.displayTime} message="Catch this animal!" onEnd={endFishBox}/>
           ) : (
             <div>
-              {!isCorrect && !isWrong && !isGameOver && <FishPool fishNumber={gameLevel.fish} correctFishName="anglerfish.png" onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
+              {!isCorrect && !isWrong && !isGameOver && <FishPool fishNumber={gameLevel.fish} correctFishName={targetFish} onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
             </div>
           )}
   

@@ -16,14 +16,6 @@ export default function TimeBox( props: TimeBoxProps ) {
     const onTimerTick = (timerValue: number) => {
         setTimerValue(timerValue - 1); 
     };
-
-    // useEffect(() => {
-    //     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
-    //     return () => {
-    //         // Cleanup the timer if the component unmounts to avoid memory leaks
-    //         setTimerValue(props.duration);
-    //     };
-    // }, [props.duration])
     
     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
 
