@@ -18,6 +18,7 @@ export default function FishSilhouette( props: FishSilhouetteProps ) {
             <img src={props.imageName}  
                 onClick={onClick}
                 className="absolute"
+                // className="absolute circle-image"
                 // className="fish absolute"
                 style={{
                     left: `${props.leftPosition}px`,

@@ -10,7 +10,7 @@ root.render(
     onSuccess={() => alert("Game success")}
     onError={() => alert("Game error")}
     levelInfo={{
-      level: 1,
+      level: 1, // starting level
     }}
   />
 );

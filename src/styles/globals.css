@@ -25,3 +25,30 @@ body,
       transform: translateX(-100px) rotate(0deg); /* Reset to start position */
   }
 }
+
+/* for moving circularly */
+.circle-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circle-image {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  animation: rotate 12s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) translateX(120px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(120px) rotate(-360deg);
+  }
+}
+

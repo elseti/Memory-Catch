@@ -43,7 +43,6 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const [isCorrect, setIsCorrect] = useState<boolean>(false);
   const [isWrong, setIsWrong] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage] = useState<string>("Wrong!");
 
   // using zustand for storing states for lives and level
   const lives = useStore((state) => state.lives);
@@ -52,20 +51,23 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const level = useStore((state) => state.level);
   const setLevel = useStore((state) => state.setLevel);
 
+  // when level is successfully completed
   const handleGameSuccess = () => {
     // if (onSuccess) onSuccess();
-    // TODO- CHECK IF LEVEL IS OVER
-    setIsCorrect(true);
     if(level < HIGHEST_LEVEL){
+      setIsCorrect(true);
       setLevel(level + 1);
       setGameLevel(getLevel(level + 1));
       setTargetFish(getRandomFish());
     }
+    else{
+      handleGameOver();
+    }
   };
 
+  // when player is wrong or timer runs out
   const handleGameError = () => {
     // if (onError) onError();
-    setErrorMessage("Wrong answer!")
     if(lives === 1){
       handleGameOver();
       setLives(lives - 1);
@@ -77,6 +79,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     }
   };
 
+  // 
   const handleGameOver = () => {
     setIsGameOver(true);
   }
@@ -87,7 +90,6 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
 
   const endTimer = () => {
     console.log("end timer")
-    setErrorMessage("You ran out of time!");
     handleGameError();
     setLives(lives - 1);
   }
@@ -117,12 +119,14 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     setGameLevel(getLevel(levelInfo.level));
   }
 
-
+  // set level, set game level details, set target fish
   useEffect(() => {
-    setLevel(levelInfo.level);
-    setGameLevel(getLevel(levelInfo.level));
-    setTargetFish(getRandomFish());
-    setPageLoaded(true);
+    if(levelInfo.level <= HIGHEST_LEVEL){
+      setLevel(levelInfo.level);
+      setGameLevel(getLevel(levelInfo.level));
+      setTargetFish(getRandomFish());
+      setPageLoaded(true);
+    }
   }, [])
 
 
@@ -130,15 +134,19 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   if(pageLoaded){
     return (
         <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6">
-          {isGameOver && <GameOver message="GAME OVER..." onClick={endGameOver}/>}
-          {isCorrect && <CorrectOverlay message="Correct!" onEnd={endCorrectOverlay}/>}
-          {isWrong && <WrongOverlay message={errorMessage} onEnd={endWrongOverlay}/>}
+          {isGameOver && <GameOver message="GAME OVER..." imagePath="boy_sad.png" confettiAnimation={false} onClick={endGameOver}/>}
+          {isGameOver && level===HIGHEST_LEVEL && <GameOver imagePath="boy_happy.png" message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>}
+          {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
+          {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
           <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
           <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
-            {!showFishBox && !isCorrect && !isWrong && !isGameOver && <LevelBox level={level}/>}
-            {/* {!showFishBox && !isCorrect && !isWrong && !isGameOver && <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer}/>} */}
-            {!showFishBox && !isCorrect && !isWrong && !isGameOver && <LivesBox lives={lives} imageName="heart.png" onEnd={endLives}/>}
-            {/* TODO - add lives to game level constant? */}
+            {!isGameOver && <LevelBox level={level}/>}
+            {(!showFishBox && !isGameOver && !isCorrect && !isWrong) ? (
+              <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer} /> 
+              ) : ( 
+              <div/>
+            )}
+            {!isGameOver && <LivesBox lives={lives} imageName="heart.png" onEnd={endLives}/>}
           </div>
   
           {showFishBox ? (
