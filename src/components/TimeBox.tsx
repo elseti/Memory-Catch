@@ -20,8 +20,8 @@ export default function TimeBox( props: TimeBoxProps ) {
     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
 
     return (
-        <div className="flex flex-row -space-x-1 items-center justify-center text-center bg-slate-500 bg-opacity-85 rounded-lg p-2 gap-5">
-            <img src="timer.png" className="w-5" />
+        <div className="grid grid-cols-2 justify-center items-center bg-blue-900 bg-opacity-70 rounded-lg gap-1 md:rounded-xl p-2 md:p-5">
+            <img src="timer.png" className="w-6 md:w-10 mx-3" />
             <div>{timerValue}</div>
         </div>
     );

@@ -3,8 +3,10 @@
 import { GameLevels } from "../constants/GameLevel";
 import { fishList } from '../constants/FishImages';
 
-const HEIGHT_OFFSET = 350; // offset for calculating random position
+const HEIGHT_OFFSET = 450; // offset for calculating random position
 const WIDTH_OFFSET = 100; // offset for calculating random position
+const IMAGE_HEIGHT = 0;
+const IMAGE_WIDTH = 0;
 
 // get level details
 export function getLevel(level:number){
@@ -54,18 +56,18 @@ export function generateRandomFishList(fishNumber: number, correctFishName: stri
 
 // generate a random left position
 export function getRandomLeftPosition(maxWidth: number) {
-    let left = Math.floor(Math.random() * (maxWidth - WIDTH_OFFSET)); // Assuming the width of the image is 100px
+    let left = Math.floor(Math.random() * (maxWidth - IMAGE_WIDTH) - WIDTH_OFFSET);
     return left;
 };
 
 // generate a random top position
 export function getRandomTopPosition(maxHeight: number){
-    let top = Math.floor(Math.random() * (maxHeight - HEIGHT_OFFSET)); // Assuming the height of the image is 100px
+    let top = Math.floor(Math.random() * ((maxHeight - IMAGE_HEIGHT) - HEIGHT_OFFSET)); 
     return top;
 };
 
-// generate a random number between 0.3 to 0.8 to scale the fish
-export function getRandomScale() {
-    let scale = (Math.random() * 0.5) + 0.3;
+// generate a random number to scale the fish
+export function getRandomScale(minScale: number = 0.3, maxScale: number = 0.8) {
+    let scale = Math.random() * (maxScale - minScale) + minScale;
     return scale;
 }

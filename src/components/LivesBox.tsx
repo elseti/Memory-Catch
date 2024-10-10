@@ -7,22 +7,14 @@ interface LivesBoxProps {
 }
 
 export default function LivesBox( props: LivesBoxProps ) {
-    const [lives, setLives] = useState(props.lives);
-
-    const onEnd = () => {
-        props.onEnd && props.onEnd();
-    };
-
-
     return (
-        <div className="flex flex-row -space-x-1 items-center justify-right text-center bg-slate-500 bg-opacity-85 rounded-lg p-1">
+        <div className="grid grid-cols-3 gap-3 items-center justify-center text-center bg-blue-900 bg-opacity-70 rounded-lg md:rounded-xl p-2">
         {
             Array.from({ length: props.lives }, (_, index) => (
             <img
-                key={index} // Use the index as the key
+                key={index}
                 src={props.imageName} 
-                className="transform scale-75"
-                alt={`Life ${index + 1}`} // Optional: add an alt attribute for accessibility
+                className="w-8 md:w-14"
             />
             ))
         }

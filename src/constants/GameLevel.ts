@@ -4,7 +4,7 @@ displayTime = time to show targetted fish (fish box)
 timeLimit = time given to locate the targetted fish
 */
 
-// TODO - add lives and rounds variation as well.
+// TODO - possibly add lives and rounds variation as well.
 
 export const level1 = 
 {

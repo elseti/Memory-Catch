@@ -11,6 +11,7 @@ import CorrectOverlay from "./components/CorrectOverlay";
 import { useStore } from "./stores/store";
 import WrongOverlay from "./components/WrongOverlay";
 import GameOver from "./components/GameOver";
+import Navbar from "./components/Navbar";
 
 
 interface levelInfo {
@@ -109,14 +110,18 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   }
 
   const endGameOver = () => {
-    // TODO - go back to game page
-    alert("Go back to game page")
-
-    // resets game for now
+    // resets game for now - to delete
     setIsGameOver(false);
     setLives(3);
     setLevel(levelInfo.level);
     setGameLevel(getLevel(levelInfo.level));
+
+    // go back to home page
+    onBack();
+  }
+
+  const onBack = () => {
+    // TODO - for back button; go back to game page
   }
 
   // set level, set game level details, set target fish
@@ -133,13 +138,13 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // render after page is loaded
   if(pageLoaded){
     return (
-        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6">
+        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12">
           {isGameOver && <GameOver message="GAME OVER..." imagePath="boy_sad.png" confettiAnimation={false} onClick={endGameOver}/>}
+          <Navbar text="Memory Catch" onBack={onBack}/>
           {isGameOver && level===HIGHEST_LEVEL && <GameOver imagePath="boy_happy.png" message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>}
           {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
           {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
-          <p className="text-2xl lg:text-3xl text-center font-bold mt-10">Memory Catch</p>
-          <div className="text-center grid grid-cols-3 gap-5 px-5 text-white">
+          <div className="text-center grid grid-cols-3 gap-5 lg:gap-32 text-lg md:text-4xl px-5 lg:px-20 text-white">
             {!isGameOver && <LevelBox level={level}/>}
             {(!showFishBox && !isGameOver && !isCorrect && !isWrong) ? (
               <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer} /> 

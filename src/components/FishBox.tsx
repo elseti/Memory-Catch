@@ -23,8 +23,8 @@ export default function FishBox( props: FishBoxProps ) {
     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
 
     return (
-        <div className="h-screen w-screen items-center justify-center text-center mt-20">
-            <div className="absolute flex flex-col m-auto left-0 right-0 p-10 bg-slate-500 bg-opacity-85 rounded-xl shadow-xl w-1/2 h-1/3">
+        <div className="h-screen w-screen items-center justify-center text-center mt-20 text-xl md:text-4xl">
+            <div className="absolute flex flex-col m-auto left-0 right-0 p-10 bg-blue-600 bg-opacity-100 rounded-xl md:rounded-3xl shadow-xl w-3/5 h-1/3">
                 <p className="text-white tracking-wide">{props.message}</p>
                 <img src={`/fish_colored/${props.imageName}`} className="max-w-full m-auto md:h-52 m-auto"/>
                 <p className="text-white">{timerValue}</p>

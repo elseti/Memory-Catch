@@ -16,10 +16,20 @@ export default function FishPool( props: FishPoolProps ) {
         console.log(props.correctFishName);
         setRandomFishList(generateRandomFishList(props.fishNumber, props.correctFishName));
     }, [])
+
+    const handleRandomScale = () => {
+        // check if window is past md breakpoint or not
+        if(window.innerWidth >= 768){
+            return getRandomScale(0.7, 1.5);
+        }
+        else{
+            return getRandomScale();
+        }
+    }
     
     return (
         <div className="relative w-full h-screen mt-20">
-            {/* Render random fish */}
+            {/* Render random fishes */}
             {randomFishList.map((imageName, index) => (
                 <div key={index}>
                     <FishSilhouette 
@@ -27,7 +37,7 @@ export default function FishPool( props: FishPoolProps ) {
                         onClick={props.onWrong}
                         leftPosition={getRandomLeftPosition(window.innerWidth)}
                         topPosition={getRandomTopPosition(window.innerHeight)}
-                        scale={getRandomScale()}
+                        scale={handleRandomScale()}
                     />
                 </div>
             ))}
