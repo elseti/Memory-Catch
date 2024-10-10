@@ -13,6 +13,7 @@ import WrongOverlay from "./components/WrongOverlay";
 import GameOver from "./components/GameOver";
 import Navbar from "./components/Navbar";
 import useSound from "use-sound";
+import GamePage from "./components/GamePage";
 
 
 interface levelInfo {
@@ -39,6 +40,7 @@ interface GameComponentProps {
  */
 const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
   const [showFishBox, setShowFishBox] = useState<boolean>(true);
   const [targetFish, setTargetFish] = useState<string>("");
   const [gameLevel, setGameLevel] = useState<any>();
@@ -144,7 +146,12 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   }
 
   const onBack = () => {
+    setIsStarted(false);
     // TODO - for back button; go back to game page
+  }
+
+  const onStart = () => {
+    setIsStarted(true);
   }
 
   // set level, set game level details, set target fish
@@ -157,9 +164,8 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     }
   }, [])
 
-
   // render after page is loaded
-  if(pageLoaded){
+  if(pageLoaded && isStarted){
     return (
         <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12">
           { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
@@ -191,6 +197,18 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
           )}
   
         </div>
+    );
+  }
+
+  else{
+    return(
+      <GamePage 
+        title="Memory Catch"
+        imagePath="mc_screenshot.png"
+        description="Players must catch a specific fish among a group of silhouetted fish. The target fish is clearly shown for a few seconds before all fish revert to silhouettes. The player must then recall and tap on the correct shadow to reel in the target fish."
+        targetDomains="Episodic Memory, Working Memory, Attention and Concentration, Visuospatial"
+        onStart={onStart}
+      />
     );
   }
 
