@@ -12,6 +12,7 @@ import { useStore } from "./stores/store";
 import WrongOverlay from "./components/WrongOverlay";
 import GameOver from "./components/GameOver";
 import Navbar from "./components/Navbar";
+import useSound from "use-sound";
 
 
 interface levelInfo {
@@ -52,9 +53,29 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const level = useStore((state) => state.level);
   const setLevel = useStore((state) => state.setLevel);
 
+  const [playCorrect] = useSound(
+		'sfx/correct.mp3',
+		{ volume: 0.8 }
+	);
+
+  const [playWrong] = useSound(
+		'sfx/wrong.mp3',
+		{ volume: 0.8 }
+	);
+
+  const [playGameCompleted] = useSound(
+		'sfx/level_completed_3.mp3',
+		{ volume: 0.8 }
+	);
+
+  const [playGameOver] = useSound(
+		'sfx/game_over.mp3',
+		{ volume: 0.8 }
+	);
+
   // when level is successfully completed
   const handleGameSuccess = () => {
-    // if (onSuccess) onSuccess();
+    playCorrect();
     if(level < HIGHEST_LEVEL){
       setIsCorrect(true);
       setLevel(level + 1);
@@ -67,22 +88,24 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   };
 
   // when player is wrong or timer runs out
-  const handleGameError = () => {
-    // if (onError) onError();
+  const handleGameError = async() => {
+    playWrong();
+    console.log(lives);
     if(lives === 1){
       handleGameOver();
-      setLives(lives - 1);
     }
     else{
       setIsWrong(true);
-      setLives(lives - 1);
       setTargetFish(getRandomFish());
     }
+    setLives(lives - 1);
   };
 
   // 
   const handleGameOver = () => {
+    (level===HIGHEST_LEVEL && lives > 1) ? playGameCompleted() : playGameOver();
     setIsGameOver(true);
+    console.log(level + lives)
   }
 
   const endFishBox = () => {
@@ -139,9 +162,14 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   if(pageLoaded){
     return (
         <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12">
-          {isGameOver && <GameOver message="GAME OVER..." imagePath="boy_sad.png" confettiAnimation={false} onClick={endGameOver}/>}
+          { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
+            <GameOver imagePath="boy_happy.png" message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
+          ) : (
+            <>
+              {isGameOver && <GameOver message="GAME OVER..." imagePath="boy_sad.png" confettiAnimation={false} onClick={endGameOver}/>}
+            </>
+          )}
           <Navbar text="Memory Catch" onBack={onBack}/>
-          {isGameOver && level===HIGHEST_LEVEL && <GameOver imagePath="boy_happy.png" message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>}
           {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
           {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
           <div className="text-center grid grid-cols-3 gap-5 lg:gap-32 text-lg md:text-4xl px-5 lg:px-20 text-white">

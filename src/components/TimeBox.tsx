@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useTimer from '../hooks/useTimer';
 
+
 interface TimeBoxProps {
     duration: number; // duration of timer (seoncds)
     onEnd: () => void; // function to run when timer runs out
@@ -16,7 +17,7 @@ export default function TimeBox( props: TimeBoxProps ) {
     const onTimerTick = (timerValue: number) => {
         setTimerValue(timerValue - 1); 
     };
-    
+
     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
 
     return (

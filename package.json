@@ -18,6 +18,7 @@
     "lottie-web": "^5.12.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "use-sound": "^4.0.3",
     "zustand": "^5.0.0-rc.2"
   },
   "devDependencies": {
