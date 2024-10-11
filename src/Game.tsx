@@ -135,22 +135,29 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
 
   const endGameOver = () => {
     // resets game for now - to delete
-    setIsGameOver(false);
-    setLives(3);
-    setLevel(levelInfo.level);
-    setGameLevel(getLevel(levelInfo.level));
+    resetGame();
 
     // go back to home page
     onBack();
   }
 
   const onBack = () => {
+    // Go back to game page
     setIsStarted(false);
-    // TODO - for back button; go back to game page
+
+    // for now, resets the game when back button is pressed
+    resetGame();
   }
 
   const onStart = () => {
     setIsStarted(true);
+  }
+
+  const resetGame = () => {
+    setIsGameOver(false);
+    setLives(3);
+    setLevel(levelInfo.level);
+    setGameLevel(getLevel(levelInfo.level));
   }
 
   // set level, set game level details, set target fish
