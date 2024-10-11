@@ -18,7 +18,7 @@ export default function GamePage(props: GamePageProps){
     }
 
     return(
-        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12">
+        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full min-h-screen overflow-hidden gap-6 lg:gap-12">
             <Navbar text={props.title} onBack={onBack}/>
             <div className="mx-8 justify-center text-center flex flex-col items-center">
                 <img src={props.imagePath} className="rounded-lg shadow-lg"/>
@@ -42,7 +42,7 @@ export default function GamePage(props: GamePageProps){
                     </button>
                 }
                 
-                <button className="w-full mt-6 md:mt-16 md:text-3xl animate-pulse bg-blue-600 hover:bg-blue-400 p-4 text-white rounded-xl text-2xl tracking-wider shadow-lg md:w-1/2" onClick={props.onStart} >
+                <button className="w-full my-6 md:my-16 md:text-3xl animate-pulse bg-blue-600 hover:bg-blue-400 p-4 text-white rounded-xl text-2xl tracking-wider shadow-lg md:w-1/2" onClick={props.onStart} >
                     Start!
                 </button>
             </div>
