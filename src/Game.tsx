@@ -92,7 +92,6 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // when player is wrong or timer runs out
   const handleGameError = async() => {
     playWrong();
-    console.log(lives);
     if(lives === 1){
       handleGameOver();
     }

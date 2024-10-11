@@ -1,0 +1,30 @@
+
+
+@keyframes rotate {
+    0% {
+      transform: rotate(0deg) translateX(120px) rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg) translateX(120px) rotate(-360deg);
+    }
+  }
+  
+  
+@keyframes move {
+    0% {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(100px, 150px); /* Move diagonally */
+    }
+    50% {
+        transform: translate(-50px, 100px); /* Move to the left */
+    }
+    75% {
+        transform: translate(150px, -100px); /* Move upward */
+    }
+    100% {
+        transform: translate(0, 0); /* Return to original position */
+    }
+}
+  

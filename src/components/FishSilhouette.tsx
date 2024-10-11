@@ -1,3 +1,5 @@
+import { getRandomAnimationStyles } from "./GameLogic";
+
 interface FishSilhouetteProps {
     imageName: string; // path to image of fish silhouette
     leftPosition: number; // left position in pixels of the fish
@@ -12,15 +14,20 @@ export default function FishSilhouette( props: FishSilhouetteProps ) {
         props.onClick();
     };
 
+    const getRandomDuration = () => {
+        let duration = Math.floor(Math.random() * 10);
+        return duration
+    }
+
+    const animationStyles = getRandomAnimationStyles();
 
     return (
         <button>
             <img src={props.imageName}  
                 onClick={onClick}
                 className="absolute"
-                // className="absolute circle-image"
-                // className="fish absolute"
                 style={{
+                    ...animationStyles,
                     left: `${props.leftPosition}px`,
                     top:  `${props.topPosition}px`,
                     transform: `scale(${props.scale})`

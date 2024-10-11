@@ -1,3 +1,5 @@
+@import "./fish_animation.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,47 +10,3 @@ body,
   height: 100%;
   width: 100%;
 }
-
-.fish {
-  animation: swim 5s linear infinite; /* Animation applied to fish */
-}
-
-/* Keyframes for swimming animation */
-@keyframes swim {
-  0% {
-      transform: translateX(-100px) rotate(0deg); /* Start from left off-screen */
-  }
-  50% {
-      transform: translateX(100vw) rotate(10deg); /* Move across to right side */
-  }
-  100% {
-      transform: translateX(-100px) rotate(0deg); /* Reset to start position */
-  }
-}
-
-/* for moving circularly */
-.circle-container {
-  position: relative;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.circle-image {
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  animation: rotate 12s linear infinite;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg) translateX(120px) rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg) translateX(120px) rotate(-360deg);
-  }
-}
-

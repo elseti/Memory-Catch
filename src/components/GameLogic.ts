@@ -71,3 +71,30 @@ export function getRandomScale(minScale: number = 0.3, maxScale: number = 0.8) {
     let scale = Math.random() * (maxScale - minScale) + minScale;
     return scale;
 }
+
+
+// generate random values for fish silhouette animation
+export function getRandomAnimationStyles() {
+    let randomAnimation = Math.random();
+    if(randomAnimation < 0.5){
+        const randomXTranslation = Math.random() * 400 + 50; // Random X translation distance
+        const randomYTranslation = Math.random() * 200 + 50; // Random Y translation distance
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+
+        return {
+            animation: `move ${randomDuration}s ease-in-out infinite`,
+            transform: `translate(${randomXTranslation}px, ${randomYTranslation}px)`
+        };  
+    }
+    else{
+        const randomRotation = Math.random() * 360; // Random angle between 0-360
+        const randomTranslation = Math.random() * 400 + 50; // Random translation distance between 50-450px
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+
+        return {
+            animation: `rotate ${randomDuration}s linear infinite`,
+            transform: `rotate(${randomRotation}deg) translateX(${randomTranslation}px) rotate(-${randomRotation}deg)`
+        };
+    }
+    
+}
