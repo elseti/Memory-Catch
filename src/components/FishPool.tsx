@@ -3,10 +3,10 @@ import FishSilhouette from './FishSilhouette';
 import { generateRandomFishList, getRandomLeftPosition, getRandomScale, getRandomTopPosition } from './GameLogic';
 
 interface FishPoolProps {
-    fishNumber: number;
+    fishNumber: number; // number of random fish to generate (including targetfish)
     correctFishName: string; // name path of correct fish name
-    onCorrect: () => void; // function to run when fish box disappears
-    onWrong: () => void;
+    onCorrect: () => void; // function to run when correct
+    onWrong: () => void; // function to run when wrong
 }
 
 export default function FishPool( props: FishPoolProps ) {

@@ -39,14 +39,14 @@ interface GameComponentProps {
  *   - lives: The number of lives available in the game level.
  */
 const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
-  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
-  const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [showFishBox, setShowFishBox] = useState<boolean>(true);
-  const [targetFish, setTargetFish] = useState<string>("");
-  const [gameLevel, setGameLevel] = useState<any>();
-  const [isCorrect, setIsCorrect] = useState<boolean>(false);
-  const [isWrong, setIsWrong] = useState<boolean>(false);
-  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false); // set to true if level info is set
+  const [isStarted, setIsStarted] = useState<boolean>(false); // set to true if start button is played
+  const [showFishBox, setShowFishBox] = useState<boolean>(true); // set to true if fish box is shown
+  const [targetFish, setTargetFish] = useState<string>(""); // the name (image path) of target fish
+  const [gameLevel, setGameLevel] = useState<any>(); // game level info (fetched from constants/GameLevel.ts)
+  const [isCorrect, setIsCorrect] = useState<boolean>(false); // if set to true, show correct overlay
+  const [isWrong, setIsWrong] = useState<boolean>(false); // if set to false, show wrong overlay
+  const [isGameOver, setIsGameOver] = useState<boolean>(false); // set to true if game is over (either win or lives lost)
 
   // using zustand for storing states for lives and level
   const lives = useStore((state) => state.lives);
@@ -75,7 +75,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
 		{ volume: 0.8 }
 	);
 
-  // when level is successfully completed
+  // run when level is successfully completed
   const handleGameSuccess = () => {
     playCorrect();
     if(level < HIGHEST_LEVEL){
@@ -89,7 +89,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     }
   };
 
-  // when player is wrong or timer runs out
+  // run when player is wrong or timer runs out
   const handleGameError = async() => {
     playWrong();
     if(lives === 1){
@@ -102,7 +102,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     setLives(lives - 1);
   };
 
-  // 
+  // run when game is over (level completed / lives lost)
   const handleGameOver = () => {
     (level===HIGHEST_LEVEL && lives > 1) ? playGameCompleted() : playGameOver();
     setIsGameOver(true);
@@ -114,7 +114,6 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   }
 
   const endTimer = () => {
-    console.log("end timer")
     handleGameError();
     setLives(lives - 1);
   }
@@ -142,17 +141,19 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   }
 
   const onBack = () => {
-    // Go back to game page
+    // go back to game page
     setIsStarted(false);
 
     // for now, resets the game when back button is pressed
     resetGame();
   }
 
+  // run when start button is pressed
   const onStart = () => {
     setIsStarted(true);
   }
 
+  // helper function to reset game
   const resetGame = () => {
     setIsGameOver(false);
     setLives(3);
@@ -205,7 +206,8 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
         </div>
     );
   }
-
+  
+  // render instruction game page
   else{
     return(
       <GamePage 

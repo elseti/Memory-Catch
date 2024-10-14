@@ -11,15 +11,17 @@ interface FishBoxProps {
 export default function FishBox( props: FishBoxProps ) {
     const [timerValue, setTimerValue] = useState(props.duration);
 
+    // run when timer runs out
     const onEnd = () => {
         props.onEnd && props.onEnd();
     };
 
+    // run when timer decreases by 1 second
     const onTimerTick = (timerValue: number) => {
         setTimerValue(timerValue - 1);
     };
 
-    // popup disappears after duration (seconds)
+    // use hook to handle timer
     useTimer({ duration: props.duration, onTimerEnd: onEnd, onTimerTick });
 
     return (

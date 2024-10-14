@@ -1,18 +1,19 @@
-// this is a manual/ starting page for a game
+// this is a manual / starting page for a game
 
 import Navbar from "./Navbar";
 
 interface GamePageProps{
-    title: string;
-    imagePath: string;
-    description: string;
-    targetDomains: string;
+    title: string; // text shown on the navbar
+    imagePath: string; // image path of the game image
+    description: string; // description of the game
+    targetDomains: string; // target domains of the game
     onStart: () => void; // function to run when start button is played
     onDemo?: () => void; // function to run when demo button is played
 }
 
 export default function GamePage(props: GamePageProps){
 
+    // run when back button is pressed
     const onBack = () => {
         // TODO - back button implement
     }

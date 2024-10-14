@@ -4,10 +4,10 @@ import confetti2 from "../../public/lottie/confetti.json";
 
 
 export interface GameOverProps{
-    imagePath?: string;
-    message?: string;
-    confettiAnimation?: boolean;
-    onClick?: () => void;
+    imagePath?: string; // path of image for gameover
+    message?: string; // text
+    confettiAnimation?: boolean; // true if you want to play confetti animation 
+    onClick?: () => void; // function run when "return" button is clicked
 }
 
 export default function GameOver( props:GameOverProps ){

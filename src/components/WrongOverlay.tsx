@@ -4,9 +4,9 @@ import lottie from "lottie-web";
 import wrongLottie from "../../public/lottie/wrong.json";
 
 interface WrongOverlayProps{
-    duration?: number,
-    message?: string,
-    onEnd: () => void
+    duration?: number, // duration (seconds) of overlay appearing
+    message?: string, // text below the image
+    onEnd: () => void // function to run when overlay disappears
 }
 
 export default function WrongOverlay(props : WrongOverlayProps){

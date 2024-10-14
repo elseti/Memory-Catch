@@ -1,7 +1,7 @@
 
 interface NavbarProps{
-    text?: string;
-    onBack?: () => void;
+    text?: string; // text on navbar
+    onBack?: () => void; // function run when clicked back
 }
 
 export default function Navbar(props: NavbarProps){

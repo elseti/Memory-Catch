@@ -4,9 +4,9 @@ import lottie from "lottie-web";
 import correctLottie from "../../public/lottie/correct.json";
 
 interface CorrectOverlayProps{
-    duration?: number,
-    message?: string,
-    onEnd: () => void
+    duration?: number, // duration (seconds) of overlay appearing
+    message?: string, // text below the image
+    onEnd: () => void // function to run when overlay disappears
 }
 
 export default function CorrectOverlay(props : CorrectOverlayProps){
@@ -39,7 +39,6 @@ export default function CorrectOverlay(props : CorrectOverlayProps){
         <div className="absolute z-50 w-full h-screen bg-green-300 bg-opacity-30 justify-center text-center">
             <div id="correct_lottie" className="absolute z-40 inset-0 w-full h-full scale-[0.8] pointer-events-none" />
             <div className="absolute transform scale-75 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                {/* <img src="correct.png"/> */}
                 <p className="text-green-800 text-2xl font-bold tracking-wider">{props.message}</p>
             </div> 
         </div>

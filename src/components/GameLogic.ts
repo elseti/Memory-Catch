@@ -8,6 +8,8 @@ const WIDTH_OFFSET = 100; // offset for calculating random position
 const IMAGE_HEIGHT = 0;
 const IMAGE_WIDTH = 0;
 
+export const HIGHEST_LEVEL = 10;
+
 // get level details
 export function getLevel(level:number){
     switch(level){
@@ -33,8 +35,6 @@ export function getLevel(level:number){
             return GameLevels.level10;
     }
 }
-
-export const HIGHEST_LEVEL = 10;
 
 // get a random fish to be targetted
 export function getRandomFish(){
