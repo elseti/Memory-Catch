@@ -72,6 +72,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
       setTargetFish(getRandomFish());
     }
     else{
+      playGameCompleted()
       handleGameOver();
     }
   };
@@ -79,21 +80,20 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // run when player is wrong or timer runs out
   const handleGameError = async() => {
     playWrong();
+    setLives(lives - 1);
     if(lives === 1){
+      playGameOver();
       handleGameOver();
     }
     else{
       setIsWrong(true);
       setTargetFish(getRandomFish());
     }
-    setLives(lives - 1);
   };
 
   // run when game is over (level completed / lives lost)
   const handleGameOver = () => {
-    (level===HIGHEST_LEVEL && lives > 1) ? playGameCompleted() : playGameOver();
     setIsGameOver(true);
-    console.log(level + lives)
   }
 
   const endFishBox = () => {
@@ -120,7 +120,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   }
 
   const endGameOver = () => {
-    // resets game for now - to delete
+    // resets game for now - to delete later
     resetGame();
 
     // go back to home page
@@ -162,7 +162,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // render after page is loaded
   if(pageLoaded && isStarted){
     return (
-        <div className={`bg-[url('${imageFiles.seaBackground}')]  bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12`}>
+        <div className="bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12" style={{ backgroundImage: `url(${imageFiles.seaBackground})` }}>
           { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
             <GameOver imagePath={imageFiles.boyHappy} message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
           ) : (
@@ -180,7 +180,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
               ) : ( 
               <div/>
             )}
-            {!isGameOver && <LivesBox lives={lives} imageName={imageFiles.heart} onEnd={endLives}/>}
+            {!isGameOver && <LivesBox lives={lives} onEnd={endLives}/>}
           </div>
   
           {showFishBox ? (
