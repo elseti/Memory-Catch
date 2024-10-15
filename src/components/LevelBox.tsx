@@ -1,5 +1,5 @@
 interface LevelBoxProps {
-    level: number; // current level to display
+    level: number;      // current level to display
 }
 
 export default function LevelBox( props: LevelBoxProps ) {

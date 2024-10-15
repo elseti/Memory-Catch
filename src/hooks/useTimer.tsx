@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 
 export interface UseCountdownTimerProps {
-  duration: number;
-  onTimerTick: (timerValue:number) => void;
-  onTimerEnd: () => void;
+  duration: number;                           // duration (seconds)
+  onTimerTick: (timerValue:number) => void;   // function to run when value ticks down by 1
+  onTimerEnd: () => void;                     // function to run when timer ends
 }
 
 const useTimer = (props:UseCountdownTimerProps) => {

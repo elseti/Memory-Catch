@@ -1,3 +1,5 @@
+// contains level info used in memory catch
+
 /*
 fish = number of fish shown 
 displayTime = time to show targetted fish (fish box)

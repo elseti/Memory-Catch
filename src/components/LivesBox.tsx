@@ -1,8 +1,8 @@
 import imageFiles from "../constants/images";
 
 interface LivesBoxProps {
-    lives: number; // number of lives
-    onEnd?: () => void; // function to run when all lives disappear
+    lives: number;          // number of lives
+    onEnd?: () => void;     // function to run when all lives disappear
 }
 
 export default function LivesBox( props: LivesBoxProps ) {

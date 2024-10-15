@@ -4,8 +4,8 @@ import imageFiles from '../constants/images';
 
 
 interface TimeBoxProps {
-    duration: number; // duration of timer (seoncds)
-    onEnd: () => void; // function to run when timer runs out
+    duration: number;       // duration of timer (seoncds)
+    onEnd: () => void;      // function to run when timer runs out
 }
 
 export default function TimeBox( props: TimeBoxProps ) {

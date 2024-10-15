@@ -1,13 +1,12 @@
 import lottie from "lottie-web";
 import { useEffect } from 'react';
-import confetti2 from "../../public/lottie/confetti.json";
-
+import imageFiles from "../constants/images";
 
 export interface GameOverProps{
-    imagePath?: string; // path of image for gameover
-    message?: string; // text
-    confettiAnimation?: boolean; // true if you want to play confetti animation 
-    onClick?: () => void; // function run when "return" button is clicked
+    imagePath?: string;             // path of image for gameover
+    message?: string;               // text
+    confettiAnimation?: boolean;    // true if you want to play confetti animation 
+    onClick?: () => void;           // function run when "return" button is clicked
 }
 
 export default function GameOver( props:GameOverProps ){
@@ -18,7 +17,7 @@ export default function GameOver( props:GameOverProps ){
           renderer: 'svg',
           loop: false,
           autoplay: true,
-          animationData: confetti2
+          animationData: imageFiles.confettiLottie
         });
     }, []);
 
@@ -33,7 +32,7 @@ export default function GameOver( props:GameOverProps ){
             <div className="flex flex-col items-center justify-center text-center text-blue-950 text-xl md:text-4xl">
                 {props.confettiAnimation && <div id="reward_lottie" className="absolute z-40 inset-0 w-full h-full scale-[1.4] pointer-events-none" />}
                 <h2 className="text-dark-pink font-bold">{props.message}</h2>
-                <img src={props.imagePath || "boy_sad.png"} className="w-32 my-8 md:w-44"/>
+                <img src={props.imagePath || imageFiles.boySad} className="w-32 my-8 md:w-44"/>
                 <h2 className="text-dark-pink text-blue-100 text-lg md:text-2xl">click to continue</h2>
                 <button className="bg-blue-200 animate-pulse px-12 py-2 md:py-4 my-2 rounded-2xl shadow-lg font-bold tracking-wider text-blue-950"
                     onClick={onClick}

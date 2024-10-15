@@ -1,12 +1,12 @@
 import useTimer from '../hooks/useTimer';
 import { useState, useEffect } from 'react';
-import lottie from "lottie-web";
-import wrongLottie from "../../public/lottie/wrong.json";
+import lottie from "lottie-web"
+import imageFiles from '../constants/images';
 
 interface WrongOverlayProps{
-    duration?: number, // duration (seconds) of overlay appearing
-    message?: string, // text below the image
-    onEnd: () => void // function to run when overlay disappears
+    duration?: number,          // duration (seconds) of overlay appearing
+    message?: string,           // text below the image
+    onEnd: () => void           // function to run when overlay disappears
 }
 
 export default function WrongOverlay(props : WrongOverlayProps){
@@ -27,7 +27,7 @@ export default function WrongOverlay(props : WrongOverlayProps){
           renderer: 'svg',
           loop: false,
           autoplay: true,
-          animationData: wrongLottie
+          animationData: imageFiles.wrongLottie
         });
     }, []);
 

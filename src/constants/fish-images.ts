@@ -1,5 +1,7 @@
-// note- the pngs with fish1, fish2,... etc, are for higher difficulty levels because they look similar
+// contains file imports for fish images used in memory catch
 
+// note for later- the pngs with fish1, fish2,... etc, are for higher difficulty levels because they look similar
+// the list of fish inside the silhouette and colored folders
 export const fishList = [
     "anglerfish.png",
     "anglerfish2.png",
@@ -36,3 +38,9 @@ export const fishList = [
     "whale.png",
     "whale2.png"
 ]
+
+// suffix (folder name) containing silhouette fish images (relative to public)
+export const silhouetteSuffix = "fish_silhouette/";
+
+// suffix (folder name) containing colored fish images (relative to public)
+export const colorSuffix = "fish_colored/";

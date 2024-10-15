@@ -16,11 +16,11 @@ export default function GamePage(props: GamePageProps){
 
     // run when back button is pressed
     const onBack = () => {
-        // TODO - back button implement
+        // TODO - implement back button 
     }
 
     return(
-        <div className={`bg-[url('${props.backgroundPath}')] bg-cover bg-no-repeat flex flex-col w-full min-h-screen overflow-hidden gap-6 lg:gap-12`}>
+        <div className="bg-cover bg-no-repeat flex flex-col w-full min-h-screen overflow-hidden gap-6 lg:gap-12" style={{ backgroundImage: `url(${props.backgroundPath})` }}>
             <Navbar text={props.title} onBack={onBack}/>
             <div className="mx-8 justify-center text-center flex flex-col items-center">
                 <img src={props.imagePath} className="rounded-lg shadow-lg"/>

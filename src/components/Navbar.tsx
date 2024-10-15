@@ -1,8 +1,8 @@
 import imageFiles from "../constants/images";
 
 interface NavbarProps{
-    text?: string; // text on navbar
-    onBack?: () => void; // function run when clicked back
+    text?: string;          // text on navbar
+    onBack?: () => void;    // function run when clicked back
 }
 
 export default function Navbar(props: NavbarProps){

@@ -3,8 +3,8 @@
 import { GameLevels } from "../constants/game-level";
 import { fishList } from '../constants/fish-images';
 
-const HEIGHT_OFFSET = 450; // offset for calculating random position
-const WIDTH_OFFSET = 100; // offset for calculating random position
+const HEIGHT_OFFSET = 450;      // offset for calculating random position
+const WIDTH_OFFSET = 100;       // offset for calculating random position
 const IMAGE_HEIGHT = 0;
 const IMAGE_WIDTH = 0;
 
@@ -39,7 +39,7 @@ export function getLevel(level:number){
 // get a random fish to be targetted
 export function getRandomFish(){
     let randomFish = fishList[Math.floor(Math.random() * fishList.length)];
-    console.log(randomFish)
+    // console.log(randomFish)
     return randomFish;
 }
 

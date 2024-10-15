@@ -1,3 +1,5 @@
+// contains file imports for sounds used in memory catch
+
 import gameoverSound from "/sfx/game_over.mp3";
 import correctSound from "/sfx/correct.mp3"
 import wrongSound from "/sfx/wrong.mp3"
