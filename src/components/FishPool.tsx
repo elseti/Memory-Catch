@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import FishSilhouette from './FishSilhouette';
-import { generateRandomFishList, getRandomLeftPosition, getRandomScale, getRandomTopPosition } from './GameLogic';
+import { generateRandomFishList, getRandomLeftPosition, getRandomScale, getRandomTopPosition } from './game-logic';
 
 interface FishPoolProps {
     fishNumber: number; // number of random fish to generate (including targetfish)

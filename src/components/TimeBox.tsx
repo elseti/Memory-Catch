@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useTimer from '../hooks/useTimer';
+import imageFiles from '../constants/images';
 
 
 interface TimeBoxProps {
@@ -22,7 +23,7 @@ export default function TimeBox( props: TimeBoxProps ) {
 
     return (
         <div className="grid grid-cols-2 justify-center items-center bg-blue-900 bg-opacity-70 rounded-lg gap-1 md:rounded-xl p-2 md:p-5">
-            <img src="timer.png" className="w-6 md:w-10 mx-3" />
+            <img src={imageFiles.timer} className="w-6 md:w-10 mx-3" />
             <div>{timerValue}</div>
         </div>
     );

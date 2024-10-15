@@ -1,4 +1,4 @@
-import { getRandomAnimationStyles } from "./GameLogic";
+import { getRandomAnimationStyles } from "./game-logic";
 
 interface FishSilhouetteProps {
     imageName: string; // path to image of fish silhouette

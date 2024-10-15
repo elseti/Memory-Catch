@@ -3,12 +3,13 @@
 import Navbar from "./Navbar";
 
 interface GamePageProps{
-    title: string; // text shown on the navbar
-    imagePath: string; // image path of the game image
-    description: string; // description of the game
-    targetDomains: string; // target domains of the game
-    onStart: () => void; // function to run when start button is played
-    onDemo?: () => void; // function to run when demo button is played
+    title: string;          // text shown on the navbar
+    imagePath: string;      // image path of the game image
+    backgroundPath: string; // image path of the game page background
+    description: string;    // description of the game
+    targetDomains: string;  // target domains of the game
+    onStart: () => void;    // function to run when start button is played
+    onDemo?: () => void;    // function to run when demo button is played
 }
 
 export default function GamePage(props: GamePageProps){
@@ -19,7 +20,7 @@ export default function GamePage(props: GamePageProps){
     }
 
     return(
-        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full min-h-screen overflow-hidden gap-6 lg:gap-12">
+        <div className={`bg-[url('${props.backgroundPath}')] bg-cover bg-no-repeat flex flex-col w-full min-h-screen overflow-hidden gap-6 lg:gap-12`}>
             <Navbar text={props.title} onBack={onBack}/>
             <div className="mx-8 justify-center text-center flex flex-col items-center">
                 <img src={props.imagePath} className="rounded-lg shadow-lg"/>

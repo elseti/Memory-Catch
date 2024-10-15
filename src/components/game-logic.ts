@@ -1,7 +1,7 @@
 // Game Logic for Memory Catch
 
-import { GameLevels } from "../constants/GameLevel";
-import { fishList } from '../constants/FishImages';
+import { GameLevels } from "../constants/game-level";
+import { fishList } from '../constants/fish-images';
 
 const HEIGHT_OFFSET = 450; // offset for calculating random position
 const WIDTH_OFFSET = 100; // offset for calculating random position

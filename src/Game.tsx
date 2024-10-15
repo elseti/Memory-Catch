@@ -6,7 +6,7 @@ import LivesBox from "./components/LivesBox";
 import LevelBox from "./components/LevelBox";
 import TimeBox from "./components/TimeBox";
 import FishPool from "./components/FishPool";
-import { getLevel, getRandomFish, HIGHEST_LEVEL } from "./components/GameLogic";
+import { getLevel, getRandomFish, HIGHEST_LEVEL } from "./components/game-logic";
 import CorrectOverlay from "./components/CorrectOverlay";
 import { useStore } from "./stores/store";
 import WrongOverlay from "./components/WrongOverlay";
@@ -14,7 +14,8 @@ import GameOver from "./components/GameOver";
 import Navbar from "./components/Navbar";
 import useSound from "use-sound";
 import GamePage from "./components/GamePage";
-
+import soundFiles from "./constants/sounds";
+import imageFiles from "./constants/images";
 
 interface levelInfo {
   level: number;
@@ -39,14 +40,14 @@ interface GameComponentProps {
  *   - lives: The number of lives available in the game level.
  */
 const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
-  const [pageLoaded, setPageLoaded] = useState<boolean>(false); // set to true if level info is set
-  const [isStarted, setIsStarted] = useState<boolean>(false); // set to true if start button is played
-  const [showFishBox, setShowFishBox] = useState<boolean>(true); // set to true if fish box is shown
-  const [targetFish, setTargetFish] = useState<string>(""); // the name (image path) of target fish
-  const [gameLevel, setGameLevel] = useState<any>(); // game level info (fetched from constants/GameLevel.ts)
-  const [isCorrect, setIsCorrect] = useState<boolean>(false); // if set to true, show correct overlay
-  const [isWrong, setIsWrong] = useState<boolean>(false); // if set to false, show wrong overlay
-  const [isGameOver, setIsGameOver] = useState<boolean>(false); // set to true if game is over (either win or lives lost)
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false);   // set to true if level info is set
+  const [isStarted, setIsStarted] = useState<boolean>(false);     // set to true if start button is played
+  const [showFishBox, setShowFishBox] = useState<boolean>(true);  // set to true if fish box is shown
+  const [targetFish, setTargetFish] = useState<string>("");       // the name (image path) of target fish
+  const [gameLevel, setGameLevel] = useState<any>();              // game level info (fetched from constants/GameLevel.ts)
+  const [isCorrect, setIsCorrect] = useState<boolean>(false);     // if set to true, show correct overlay
+  const [isWrong, setIsWrong] = useState<boolean>(false);         // if set to false, show wrong overlay
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);   // set to true if game is over (either win or lives lost)
 
   // using zustand for storing states for lives and level
   const lives = useStore((state) => state.lives);
@@ -55,25 +56,11 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const level = useStore((state) => state.level);
   const setLevel = useStore((state) => state.setLevel);
 
-  const [playCorrect] = useSound(
-		'sfx/correct.mp3',
-		{ volume: 0.8 }
-	);
-
-  const [playWrong] = useSound(
-		'sfx/wrong.mp3',
-		{ volume: 0.8 }
-	);
-
-  const [playGameCompleted] = useSound(
-		'sfx/level_completed_3.mp3',
-		{ volume: 0.8 }
-	);
-
-  const [playGameOver] = useSound(
-		'sfx/game_over.mp3',
-		{ volume: 0.8 }
-	);
+  // use useSound to play sounds
+  const [playCorrect] = useSound(soundFiles.correctSound);
+  const [playWrong] = useSound(soundFiles.wrongSound);
+  const [playGameOver] = useSound(soundFiles.gameoverSound);
+  const [playGameCompleted] = useSound(soundFiles.levelCompletedSound);
 
   // run when level is successfully completed
   const handleGameSuccess = () => {
@@ -140,6 +127,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     onBack();
   }
 
+  // run when back button is pressed
   const onBack = () => {
     // go back to game page
     setIsStarted(false);
@@ -174,12 +162,12 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // render after page is loaded
   if(pageLoaded && isStarted){
     return (
-        <div className="bg-[url('/mc_desktop_bg.png')] bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12">
+        <div className={`bg-[url('${imageFiles.seaBackground}')]  bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12`}>
           { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
-            <GameOver imagePath="boy_happy.png" message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
+            <GameOver imagePath={imageFiles.boyHappy} message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
           ) : (
             <>
-              {isGameOver && <GameOver message="GAME OVER..." imagePath="boy_sad.png" confettiAnimation={false} onClick={endGameOver}/>}
+              {isGameOver && <GameOver message="GAME OVER..." imagePath={imageFiles.boySad} confettiAnimation={false} onClick={endGameOver}/>}
             </>
           )}
           <Navbar text="Memory Catch" onBack={onBack}/>
@@ -192,7 +180,7 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
               ) : ( 
               <div/>
             )}
-            {!isGameOver && <LivesBox lives={lives} imageName="heart.png" onEnd={endLives}/>}
+            {!isGameOver && <LivesBox lives={lives} imageName={imageFiles.heart} onEnd={endLives}/>}
           </div>
   
           {showFishBox ? (
@@ -207,12 +195,13 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     );
   }
   
-  // render instruction game page
+  // render instruction / manual game page
   else{
     return(
       <GamePage 
         title="Memory Catch"
-        imagePath="mc_screenshot.png"
+        imagePath="images/mc_screenshot.png"
+        backgroundPath={imageFiles.seaBackground}
         description="Players must catch a specific fish among a group of silhouetted fish. The target fish is clearly shown for a few seconds before all fish revert to silhouettes. The player must then recall and tap on the correct shadow to reel in the target fish."
         targetDomains="Episodic Memory, Working Memory, Attention and Concentration, Visuospatial"
         onStart={onStart}
