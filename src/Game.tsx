@@ -145,6 +145,8 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   const resetGame = () => {
     setIsGameOver(false);
     setLives(3);
+    setTargetFish(getRandomFish());
+    setShowFishBox(true);
     setLevel(levelInfo.level);
     setGameLevel(getLevel(levelInfo.level));
   }
