@@ -164,36 +164,36 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // render after page is loaded
   if(pageLoaded && isStarted){
     return (
-        <div className="bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12" style={{ backgroundImage: `url(${imageFiles.seaBackground})` }}>
-          { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
-            <GameOver imagePath={imageFiles.boyHappy} message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
-          ) : (
-            <>
-              {isGameOver && <GameOver message="GAME OVER..." imagePath={imageFiles.boySad} confettiAnimation={false} onClick={endGameOver}/>}
-            </>
+      <div className="bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12" style={{ backgroundImage: `url(${imageFiles.seaBackground})` }}>
+        { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
+          <GameOver imagePath={imageFiles.boyHappy} message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
+        ) : (
+          <>
+            {isGameOver && <GameOver message="GAME OVER..." imagePath={imageFiles.boySad} confettiAnimation={false} onClick={endGameOver}/>}
+          </>
+        )}
+        <Navbar text="Memory Catch" onBack={onBack}/>
+        {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
+        {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
+        <div className="text-center grid grid-cols-3 gap-5 lg:gap-32 text-lg md:text-4xl px-5 lg:px-20 text-white">
+          {!isGameOver && <LevelBox level={level}/>}
+          {(!showFishBox && !isGameOver && !isCorrect && !isWrong) ? (
+            <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer} /> 
+            ) : ( 
+            <div/>
           )}
-          <Navbar text="Memory Catch" onBack={onBack}/>
-          {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
-          {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
-          <div className="text-center grid grid-cols-3 gap-5 lg:gap-32 text-lg md:text-4xl px-5 lg:px-20 text-white">
-            {!isGameOver && <LevelBox level={level}/>}
-            {(!showFishBox && !isGameOver && !isCorrect && !isWrong) ? (
-              <TimeBox duration={gameLevel.timeLimit} onEnd={endTimer} /> 
-              ) : ( 
-              <div/>
-            )}
-            {!isGameOver && <LivesBox lives={lives} onEnd={endLives}/>}
-          </div>
-  
-          {showFishBox ? (
-            <FishBox imageName={targetFish} duration={gameLevel.displayTime} message="Catch this animal!" onEnd={endFishBox}/>
-          ) : (
-            <div>
-              {!isCorrect && !isWrong && !isGameOver && <FishPool fishNumber={gameLevel.fish} correctFishName={targetFish} onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
-            </div>
-          )}
-  
+          {!isGameOver && <LivesBox lives={lives} onEnd={endLives}/>}
         </div>
+
+        {showFishBox ? (
+          <FishBox imageName={targetFish} duration={gameLevel.displayTime} message="Catch this animal!" onEnd={endFishBox}/>
+        ) : (
+          <div>
+            {!isCorrect && !isWrong && !isGameOver && <FishPool fishNumber={gameLevel.fish} correctFishName={targetFish} onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
+          </div>
+        )}
+
+      </div>
     );
   }
   

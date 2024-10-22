@@ -4,7 +4,6 @@ interface FishSilhouetteProps {
     imageName: string;          // path to image of fish silhouette
     leftPosition: number;       // left position in pixels of the fish
     topPosition: number;        // top position in pixels of the fish
-    scale: number;              // scale (decimal) of the fish
     onClick: () => void;        // function to run when the fish is clicked
 }
 
@@ -14,8 +13,7 @@ export default function FishSilhouette( props: FishSilhouetteProps ) {
         props.onClick();
     };
 
-    const animationStyles = getRandomAnimationStyles();
-
+    const animationStyles = getRandomAnimationStyles(props.leftPosition, props.topPosition);
     return (
         <button>
             <img src={props.imageName}  
@@ -24,8 +22,7 @@ export default function FishSilhouette( props: FishSilhouetteProps ) {
                 style={{
                     ...animationStyles,
                     left: `${props.leftPosition}px`,
-                    top:  `${props.topPosition}px`,
-                    transform: `scale(${props.scale})`
+                    top:  `${props.topPosition}px`
                 }}
             />
         </button>

@@ -3,10 +3,27 @@
 import { GameLevels } from "../constants/game-level";
 import { fishList } from '../constants/fish-images';
 
-const HEIGHT_OFFSET = 450;      // offset for calculating random position
+const HEIGHT_OFFSET = 200;      // offset for calculating random position
 const WIDTH_OFFSET = 100;       // offset for calculating random position
-const IMAGE_HEIGHT = 0;
-const IMAGE_WIDTH = 0;
+const IMAGE_HEIGHT = 200;
+const IMAGE_WIDTH = 150;
+
+// Define offset constants for different screen sizes
+const LEFT_OFFSET_SM = 100;    // Small screen
+const TOP_OFFSET_SM = 250;     // Small screen
+
+const LEFT_OFFSET_MD = 100;     // Medium screen
+const TOP_OFFSET_MD = 300;      // Medium screen
+
+const LEFT_OFFSET_LG = 100;     // Large screen
+const TOP_OFFSET_LG = 350;      // Large screen
+
+const LEFT_OFFSET_XL = 100;    // Extra large screen
+const TOP_OFFSET_XL = 400;      // Extra large screen
+
+const LEFT_OFFSET_2XL = 100;   // 2XL screen and above
+const TOP_OFFSET_2XL = 400;     // 2XL screen and above
+
 
 export const HIGHEST_LEVEL = 10;
 
@@ -44,57 +61,179 @@ export function getRandomFish(){
 }
 
 // generate a list of random fish (excluding the targetted fish)
-export function generateRandomFishList(fishNumber: number, correctFishName: string){
-    // filter out the correct fish from the fish list
+export function generateRandomFishList(fishNumber: number, correctFishName: string) {
+    // Filter out the correct fish from the fish list
     const availableFish = fishList.filter(fish => fish !== correctFishName);
 
-    // shuffle the available fish and select a subset
+    // Check if we have enough unique fish
+    if (availableFish.length < fishNumber - 1) {
+        console.warn(`Not enough unique fish available. Requested: ${fishNumber - 1}, Available: ${availableFish.length}`);
+        return availableFish; // or return an empty array if you prefer
+    }
+
+    // Shuffle the available fish
     const shuffledFish = availableFish.sort(() => 0.5 - Math.random());
-    return shuffledFish.slice(0, fishNumber - 1);
+
+    // Select a unique subset using array
+    const uniqueFish = [];
+    const usedFish = new Set();
+
+    while (uniqueFish.length < fishNumber - 1) {
+        const randomFish = shuffledFish[Math.floor(Math.random() * shuffledFish.length)];
+        if (!usedFish.has(randomFish)) {
+            uniqueFish.push(randomFish);
+            usedFish.add(randomFish);
+        }
+    }
+
+    return uniqueFish;
 }
+
+
 
 
 // generate a random left position
 export function getRandomLeftPosition(maxWidth: number) {
-    let left = Math.floor(Math.random() * (maxWidth - IMAGE_WIDTH) - WIDTH_OFFSET);
+    const width = window.innerWidth;
+    let left: number;
+
+    if (width <= 640) { // sm
+        left = Math.floor(Math.random() * maxWidth);
+        if (left > width / 2) left = Math.max(left - LEFT_OFFSET_SM, 0);
+        else left = Math.min(left + LEFT_OFFSET_SM, maxWidth);
+    } 
+    else if (width <= 768) { // md
+        left = Math.floor(Math.random() * maxWidth);
+        if (left > width / 2) left = Math.max(left - LEFT_OFFSET_MD, 0);
+        else left = Math.min(left + LEFT_OFFSET_MD, maxWidth);
+    } 
+    else if (width <= 1024) { // lg
+        left = Math.floor(Math.random() * maxWidth);
+        if (left > width / 2) left = Math.max(left - LEFT_OFFSET_LG, 0);
+        else left = Math.min(left + LEFT_OFFSET_LG, maxWidth);
+    } 
+    else if (width <= 1280) { // xl
+        left = Math.floor(Math.random() * maxWidth);
+        if (left > width / 2) left = Math.max(left - LEFT_OFFSET_XL, 0);
+        else left = Math.min(left + LEFT_OFFSET_XL, maxWidth);
+    } 
+    else { // 2xl and above
+        left = Math.floor(Math.random() * maxWidth);
+        if (left > width / 2) left = Math.max(left - LEFT_OFFSET_2XL, 0);
+        else left = Math.min(left + LEFT_OFFSET_2XL, maxWidth);
+    }
+
+    left = Math.max(0, Math.min(left, maxWidth - IMAGE_WIDTH));
+
+    console.log("Left: " + left);
     return left;
-};
-
-// generate a random top position
-export function getRandomTopPosition(maxHeight: number){
-    let top = Math.floor(Math.random() * ((maxHeight - IMAGE_HEIGHT) - HEIGHT_OFFSET)); 
-    return top;
-};
-
-// generate a random number to scale the fish
-export function getRandomScale(minScale: number = 0.3, maxScale: number = 0.8) {
-    let scale = Math.random() * (maxScale - minScale) + minScale;
-    return scale;
 }
 
 
-// generate random values for fish silhouette animation
-export function getRandomAnimationStyles() {
-    let randomAnimation = Math.random();
-    if(randomAnimation < 0.5){
-        const randomXTranslation = Math.random() * 400 + 50; // Random X translation distance
-        const randomYTranslation = Math.random() * 200 + 50; // Random Y translation distance
-        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
 
-        return {
-            animation: `move ${randomDuration}s ease-in-out infinite`,
-            transform: `translate(${randomXTranslation}px, ${randomYTranslation}px)`
-        };  
-    }
-    else{
-        const randomRotation = Math.random() * 360; // Random angle between 0-360
-        const randomTranslation = Math.random() * 400 + 50; // Random translation distance between 50-450px
-        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+// generate a random top position
+export function getRandomTopPosition(maxHeight: number) {
+    const width = window.innerWidth; 
+    const height = window.innerHeight;
+    let top: number;
 
-        return {
-            animation: `rotate ${randomDuration}s linear infinite`,
-            transform: `rotate(${randomRotation}deg) translateX(${randomTranslation}px) rotate(-${randomRotation}deg)`
-        };
+    if (width <= 640) { // sm
+        top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_SM;
+    } else if (width <= 768) { // md
+        top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_MD;
+    } else if (width <= 1024) { // lg
+        top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_LG;
+    } else if (width <= 1280) { // xl
+        top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_XL;
+    } else { // 2xl and above
+        top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_2XL;
     }
+
+    top = Math.max(0, Math.min(top, height - IMAGE_HEIGHT));
     
+    return top;
+}
+
+
+// generate a random number to scale the fish
+export function getRandomScale(minScale: number = 0.3, maxScale: number = 0.8) {
+    const scale = Math.random() * (maxScale - minScale) + minScale;
+    return scale;
+}
+
+export function getRandomAnimationStyles(leftPosition: number, topPosition: number) {
+    const randomAnimation = Math.random();
+    console.log("left: " + leftPosition + "| top: " + topPosition);
+
+    const width = window.innerWidth;
+    
+    // sm screen
+    if (width <= 640) {
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+        if (randomAnimation < 0.25) {
+            return { animation: `rotate_clockwise_sm ${randomDuration}s linear infinite` };
+        } else if (randomAnimation < 0.5) {
+            return { animation: `rotate_anticlockwise_sm ${randomDuration}s ease-in-out infinite` };
+        } else if (randomAnimation < 0.75) {
+            return { animation: `move_left_sm ${randomDuration}s ease-in-out infinite` };
+        } else {
+            return { animation: `move_right_sm ${randomDuration}s ease-in-out infinite` };
+        }
+    } 
+    
+    // md screen
+    else if (width <= 768) {
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+        if (randomAnimation < 0.25) {
+            return { animation: `rotate_clockwise_md ${randomDuration}s linear infinite` };
+        } else if (randomAnimation < 0.5) {
+            return { animation: `rotate_anticlockwise_md ${randomDuration}s ease-in-out infinite` };
+        } else if (randomAnimation < 0.75) {
+            return { animation: `move_left_md ${randomDuration}s ease-in-out infinite` };
+        } else {
+            return { animation: `move_right_md ${randomDuration}s ease-in-out infinite` };
+        }
+    } 
+    
+    // lg screen
+    else if (width <= 1024) {
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+        if (randomAnimation < 0.25) {
+            return { animation: `rotate_clockwise_lg ${randomDuration}s linear infinite` };
+        } else if (randomAnimation < 0.5) {
+            return { animation: `rotate_anticlockwise_lg ${randomDuration}s ease-in-out infinite` };
+        } else if (randomAnimation < 0.75) {
+            return { animation: `move_left_lg ${randomDuration}s ease-in-out infinite` };
+        } else {
+            return { animation: `move_right_lg ${randomDuration}s ease-in-out infinite` };
+        }
+    } 
+    
+    // xl screen
+    else if (width <= 1280) {
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+        if (randomAnimation < 0.25) {
+            return { animation: `rotate_clockwise_xl ${randomDuration}s linear infinite` };
+        } else if (randomAnimation < 0.5) {
+            return { animation: `rotate_anticlockwise_xl ${randomDuration}s ease-in-out infinite` };
+        } else if (randomAnimation < 0.75) {
+            return { animation: `move_left_xl ${randomDuration}s ease-in-out infinite` };
+        } else {
+            return { animation: `move_right_xl ${randomDuration}s ease-in-out infinite` };
+        }
+    } 
+    
+    // 2xl screen
+    else {
+        const randomDuration = Math.random() * 14 + 6; // Random duration between 6-20 seconds
+        if (randomAnimation < 0.25) {
+            return { animation: `rotate_clockwise_2xl ${randomDuration}s linear infinite` };
+        } else if (randomAnimation < 0.5) {
+            return { animation: `rotate_anticlockwise_2xl ${randomDuration}s ease-in-out infinite` };
+        } else if (randomAnimation < 0.75) {
+            return { animation: `move_left_2xl ${randomDuration}s ease-in-out infinite` };
+        } else {
+            return { animation: `move_right_2xl ${randomDuration}s ease-in-out infinite` };
+        }
+    }
 }
