@@ -44,7 +44,7 @@ export default function GamePage(props: GamePageProps){
                     </button>
                 }
                 
-                <button className="w-full my-6 md:my-16 md:text-3xl animate-pulse bg-blue-600 hover:bg-blue-400 p-4 text-white rounded-xl text-2xl tracking-wider shadow-lg md:w-1/2" onClick={props.onStart} >
+                <button className="w-full my-6 md:my-16 md:text-3xl bg-gradient-to-t from-blue-800 to-blue-600 animate-pulse bg-blue-600 hover:bg-blue-400 p-4 text-white rounded-xl text-2xl tracking-wider shadow-lg md:w-1/2" onClick={props.onStart} >
                     Start!
                 </button>
             </div>

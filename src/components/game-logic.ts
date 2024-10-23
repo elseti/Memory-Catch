@@ -5,8 +5,8 @@ import { fishList } from '../constants/fish-images';
 
 const HEIGHT_OFFSET = 200;      // offset for calculating random position
 const WIDTH_OFFSET = 100;       // offset for calculating random position
-const IMAGE_HEIGHT = 200;
-const IMAGE_WIDTH = 150;
+const IMAGE_HEIGHT = 100;
+const IMAGE_WIDTH = 100;
 
 // Define offset constants for different screen sizes
 const LEFT_OFFSET_SM = 100;    // Small screen
@@ -16,7 +16,7 @@ const LEFT_OFFSET_MD = 100;     // Medium screen
 const TOP_OFFSET_MD = 300;      // Medium screen
 
 const LEFT_OFFSET_LG = 100;     // Large screen
-const TOP_OFFSET_LG = 350;      // Large screen
+const TOP_OFFSET_LG = 500;      // Large screen
 
 const LEFT_OFFSET_XL = 100;    // Extra large screen
 const TOP_OFFSET_XL = 400;      // Extra large screen
@@ -149,7 +149,7 @@ export function getRandomTopPosition(maxHeight: number) {
         top = Math.floor(Math.random() * (maxHeight)) - TOP_OFFSET_2XL;
     }
 
-    top = Math.max(0, Math.min(top, height - IMAGE_HEIGHT));
+    top = Math.max(IMAGE_HEIGHT, Math.min(top, height - IMAGE_HEIGHT));
     
     return top;
 }
