@@ -7,7 +7,7 @@ interface NavbarProps{
 
 export default function Navbar(props: NavbarProps){
     return(
-        <div className="flex flex-row w-full bg-blue-600 justify-between text-center text-white text-2xl md:text-5xl font-semibold tracking-wider p-3 md:p-6">
+        <div className="flex flex-row w-full bg-gradient-to-t from-blue-800 to-blue-600 justify-between text-center text-white text-2xl md:text-5xl font-semibold tracking-wider p-3 md:p-6">
             {props.onBack && 
                 <button onClick={props.onBack}>
                     <img src={imageFiles.backButton} className="w-5 h-7 md:w-10 md:h-12"/>

@@ -11,6 +11,10 @@ root.render(
     onError={() => alert("Game error")}
     levelInfo={{
       level: 1,   // starting level (should be between 1 and 10 for now)
+      fish: 3,
+      displayTime: 5,
+      timeLimit: 60,
+      lives: 3
     }}
   />
 );
