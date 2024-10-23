@@ -7,13 +7,13 @@ interface LivesBoxProps {
 
 export default function LivesBox( props: LivesBoxProps ) {
     return (
-        <div className="grid grid-cols-3 gap-3 md:gap-7 items-center justify-center text-center bg-blue-900 bg-opacity-70 rounded-lg md:rounded-xl p-2">
+        <div className="flex flex-row gap-2 md:gap-4 items-center justify-center text-center bg-blue-900 bg-opacity-70 rounded-lg md:rounded-xl p-2">
         {
             Array.from({ length: props.lives }, (_, index) => (
             <img
                 key={index}
                 src={imageFiles.heart} 
-                className="w-8 md:w-14"
+                className="w-6 md:w-14"
             />
             ))
         }

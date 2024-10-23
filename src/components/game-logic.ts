@@ -1,6 +1,5 @@
 // Game Logic for Memory Catch
 
-import { GameLevels } from "../constants/game-level";
 import { fishList } from '../constants/fish-images';
 
 const IMAGE_HEIGHT = 100;
@@ -22,34 +21,6 @@ const TOP_OFFSET_XL = 400;      // Extra large screen
 const LEFT_OFFSET_2XL = 100;   // 2XL screen and above
 const TOP_OFFSET_2XL = 400;     // 2XL screen and above
 
-
-export const HIGHEST_LEVEL = 10;
-
-// get level details
-export function getLevel(level:number){
-    switch(level){
-        case(1):
-            return GameLevels.level1;
-        case(2):
-            return GameLevels.level2;
-        case(3):
-            return GameLevels.level3;
-        case(4):
-            return GameLevels.level4;
-        case(5):
-            return GameLevels.level5;
-        case(6):
-            return GameLevels.level6;
-        case(7):
-            return GameLevels.level7;
-        case(8):
-            return GameLevels.level8;
-        case(9):
-            return GameLevels.level9;
-        case(10):
-            return GameLevels.level10;
-    }
-}
 
 // get a random fish to be targetted
 export function getRandomFish(){

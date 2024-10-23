@@ -6,11 +6,10 @@ import LivesBox from "./components/LivesBox";
 import LevelBox from "./components/LevelBox";
 import TimeBox from "./components/TimeBox";
 import FishPool from "./components/FishPool";
-import { getLevel, getRandomFish, HIGHEST_LEVEL } from "./components/game-logic";
+import { getRandomFish } from "./components/game-logic";
 import CorrectOverlay from "./components/CorrectOverlay";
 import { useStore } from "./stores/store";
 import WrongOverlay from "./components/WrongOverlay";
-import GameOver from "./components/GameOver";
 import Navbar from "./components/Navbar";
 import useSound from "use-sound";
 import GamePage from "./components/GamePage";
@@ -42,16 +41,17 @@ interface GameComponentProps {
  *   - level: The current level of the game.
  *   - time: The time allocated for the game level.
  *   - lives: The number of lives available in the game level.
+ *   - fish: number of fish swimming on this level
+ *   - displayTime: display time of the targetted fish (for fish box)
  */
 const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelInfo}) => {
   const [pageLoaded, setPageLoaded] = useState<boolean>(false);   // set to true if level info is set
   const [isStarted, setIsStarted] = useState<boolean>(false);     // set to true if start button is played
   const [showFishBox, setShowFishBox] = useState<boolean>(true);  // set to true if fish box is shown
   const [targetFish, setTargetFish] = useState<string>("");       // the name (image path) of target fish
-  const [gameLevelInfo, setGameLevelInfo] = useState<any>();              // game level info (fetched from constants/GameLevel.ts)
+  const [gameLevelInfo, setGameLevelInfo] = useState<any>();      // game level info (fetched from constants/GameLevel.ts)
   const [isCorrect, setIsCorrect] = useState<boolean>(false);     // if set to true, show correct overlay
   const [isWrong, setIsWrong] = useState<boolean>(false);         // if set to false, show wrong overlay
-  const [isGameOver, setIsGameOver] = useState<boolean>(false);   // set to true if game is over (either win or lives lost)
 
   // using zustand for storing states for lives and level
   const lives = useStore((state) => state.lives);
@@ -63,45 +63,21 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
   // use useSound to play sounds
   const [playCorrect] = useSound(soundFiles.correctSound);
   const [playWrong] = useSound(soundFiles.wrongSound);
-  const [playGameOver] = useSound(soundFiles.gameoverSound);
-  const [playGameCompleted] = useSound(soundFiles.levelCompletedSound);
 
   // run when level is successfully completed
   const handleGameSuccess = () => {
     playCorrect();
+    setIsCorrect(true);
     onSuccess(); // run onSuccess from props
-    if(level < HIGHEST_LEVEL){
-      setIsCorrect(true);
-      setLevel(level + 1);
-      // setGameLevel(getLevel(level + 1));
-
-      setTargetFish(getRandomFish());
-    }
-    else{
-      playGameCompleted()
-      handleGameOver();
-    }
   };
 
   // run when player is wrong or timer runs out
   const handleGameError = async() => {
     playWrong();
+    setIsWrong(true);
     onError(); // run onError from props
-    setLives(lives - 1);
-    if(lives === 1){
-      playGameOver();
-      handleGameOver();
-    }
-    else{
-      setIsWrong(true);
-      setTargetFish(getRandomFish());
-    }
+    // setLives(lives - 1);
   };
-
-  // run when game is over (level completed / lives lost)
-  const handleGameOver = () => {
-    setIsGameOver(true);
-  }
 
   const endFishBox = () => {
     setShowFishBox(false);
@@ -126,21 +102,10 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     setShowFishBox(true);
   }
 
-  const endGameOver = () => {
-    // resets game for now - to delete later
-    resetGame();
-
-    // go back to home page
-    onBack();
-  }
-
   // run when back button is pressed
   const onBack = () => {
     // go back to game page
     setIsStarted(false);
-
-    // for now, resets the game when back button is pressed
-    resetGame();
   }
 
   // run when start button is pressed
@@ -148,56 +113,37 @@ const GameComponent: React.FC<GameComponentProps> = ({onSuccess, onError, levelI
     setIsStarted(true);
   }
 
-  // helper function to reset game
-  const resetGame = () => {
-    setIsGameOver(false);
-    setLives(3);
-    setTargetFish(getRandomFish());
-    setShowFishBox(true);
-    setLevel(levelInfo.level);
-    // setGameLevel(getLevel(levelInfo.level));
-  }
-
   // set level, set game level details, set target fish
   useEffect(() => {
-    if(levelInfo.level <= HIGHEST_LEVEL){
-      setLevel(levelInfo.level);
-      // setGameLevel(getLevel(levelInfo.level));
-      setGameLevelInfo(levelInfo)
-      setTargetFish(getRandomFish());
-      setPageLoaded(true);
-    }
+    setGameLevelInfo(levelInfo)
+    setTargetFish(getRandomFish());
+    setPageLoaded(true);
+    setLevel(levelInfo.level);
+    setLives(levelInfo.lives);
   }, [])
 
   // render after page is loaded
   if(pageLoaded && isStarted){
     return (
       <div className="bg-cover bg-no-repeat flex flex-col w-full h-screen overflow-hidden gap-6 lg:gap-12" style={{ backgroundImage: `url(${imageFiles.seaBackground})` }}>
-        { isGameOver && level === HIGHEST_LEVEL && lives > 0 ? (
-          <GameOver imagePath={imageFiles.boyHappy} message="YOU COMPLETED ALL LEVELS!" confettiAnimation={true} onClick={endGameOver}/>
-        ) : (
-          <>
-            {isGameOver && <GameOver message="GAME OVER..." imagePath={imageFiles.boySad} confettiAnimation={false} onClick={endGameOver}/>}
-          </>
-        )}
         <Navbar text="Memory Catch" onBack={onBack}/>
         {isCorrect && <CorrectOverlay onEnd={endCorrectOverlay}/>}
         {isWrong && <WrongOverlay onEnd={endWrongOverlay}/>}
         <div className="text-center grid grid-cols-3 gap-5 lg:gap-32 text-lg md:text-4xl px-5 lg:px-20 text-white">
-          {!isGameOver && <LevelBox level={level}/>}
-          {(!showFishBox && !isGameOver && !isCorrect && !isWrong) ? (
+          <LevelBox level={level}/>
+          {(!showFishBox && !isCorrect && !isWrong) ? (
             <TimeBox duration={gameLevelInfo.timeLimit} onEnd={endTimer} /> 
             ) : ( 
             <div/>
           )}
-          {!isGameOver && <LivesBox lives={lives} onEnd={endLives}/>}
+          <LivesBox lives={lives} onEnd={endLives}/>
         </div>
 
         {showFishBox ? (
           <FishBox imageName={targetFish} duration={gameLevelInfo.displayTime} message="Catch this animal!" onEnd={endFishBox}/>
         ) : (
           <div>
-            {!isCorrect && !isWrong && !isGameOver && <FishPool fishNumber={gameLevelInfo.fish} correctFishName={targetFish} onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
+            {!isCorrect && !isWrong && <FishPool fishNumber={gameLevelInfo.fish} correctFishName={targetFish} onCorrect={handleGameSuccess} onWrong={handleGameError}/>}
           </div>
         )}
 
